@@ -1,5 +1,24 @@
 # 🧠 Qwen2.5-VL Parkinson's Disease Video Analysis Project
 
+## 📖 Table of Contents
+
+- [📋 Overview](#-overview)
+- [🏗️ Project Structure](#️-project-structure)
+- [📁 File Layout](#-file-layout)
+- [📁 Data Folder Setup](#-data-folder-setup)
+  - [🔧 Required Data Structure](#-required-data-structure)
+  - [📋 Module-Specific Requirements](#-module-specific-requirements)
+  - [📋 Dataset Analysis](#-dataset-analysis)
+  - [🔄 Annotation Format Differences](#-annotation-format-differences)
+  - [⚠️ Critical Setup Notes](#️-critical-setup-notes)
+- [🚀 Commands for Each Module](#-commands-for-each-module)
+  - [🔍 Module 1: Zero-Shot Evaluation](#-module-1-zero-shot-evaluation)
+  - [🚀 Module 2: LoRA Fine-Tuning & Evaluation](#-module-2-lora-fine-tuning--evaluation)
+  - [📊 PD Insighter Format Output](#-pd-insighter-format-output)
+  - [🌐 Module 3: Interactive Web Application](#-module-3-interactive-web-application)
+- [🎯 Quick Start](#-quick-start)
+- [📚 Additional Resources](#-additional-resources)
+
 ## 📋 Overview
 
 This repository is based on **Qwen2.5-VL Pro** and extends it for Parkinson's disease video analysis. For basic installation and setup, please refer to the original [Qwen2.5-VL README.md](README.md) first.
