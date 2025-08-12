@@ -1,311 +1,524 @@
-# QwenVL Training Framework
+# Fine-tuning Qwen2-VL Series
 
-This repository provides a training framework for Qwen VL models. The are two steps to use our repo:
+This repository contains a script for training [Qwen2-VL](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct) and [Qwen2.5-VL](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct) with only using HuggingFace and [Liger-Kernel](https://github.com/linkedin/Liger-Kernel).
 
-1. Customize your dataset: downloading data, implement the config
-2. Modify training scripts: 
+## Other projects
 
-## Repository Structure
+**[[Phi3-Vision Finetuning]](https://github.com/2U1/Phi3-Vision-Finetune)**<br>
+**[[Llama3.2-Vision Finetuning]](https://github.com/2U1/Llama3.2-Vision-Ft)**<br>
+**[[Molmo Finetune]](https://github.com/2U1/Molmo-Finetune)**<br>
+**[[Pixtral Finetune]](https://github.com/2U1/Pixtral-Finetune)**<br>
+**[[SmolVLM Finetune]](https://github.com/2U1/SmolVLM-Finetune)**<br>
+**[[Gemma3 Finetune]](https://github.com/2U1/Gemma3-Finetune)**
 
-The `qwenvl` directory contains the following components:
+## Update
 
-### `train/`
-- `trainer.py`: Main trainer updated from Huggingface Trainer
-- `train_qwen.py`: Main file for training
-- `argument.py`: Dataclasses for model, data and training arguments
+- [2025/05/29] 🔥Supports GRPO training.
+- [2025/04/16] 🔥Supports DPO training.
+- [2025/03/04] Add Option for using liger kernel.
+- [2025/02/18] 🔥Supports mixed-modality dataset with zero3.
+- [2025/02/05] Fixed code for properly use image.
+- [2025/02/03] Support Liger-kernel for Qwen2.5-VL.
+- [2025/02/03] 🔥Supports Qwen2.5-VL.
+- [2025/01/24] Add option for using DoRA.
+- [2025/01/24] Fix error in LoRA training.
+- [2025/01/18] 🔥Supports mixed-modality data.
+- [2025/01/11] Updated 8-bit training with ms_amp fp8 with opt_level O3.
+- [2024/11/05] Add memory efficient 8-bit training.
+- [2024/09/12] 🔥Now the model is trained using [Liger-Kernel](https://github.com/linkedin/Liger-Kernel).
+- [2024/09/11] Supports setting different learning rates to projector and vision model.
+- [2024/09/11] 🔥Supports multi-image and video training.
 
-### `data/`
-- `__init__.py`: Contains datasets configs
-- `data_qwen.py`: Data processing module for QwenVL models
-- `data_qwen_packed.py`: Packed data processing module for QwenVL models
-- `rope2d.py`: Provide RoPE implementation
+## Table of Contents
 
-### `tools`
-- `process_bbox.ipynb`: Convert bbox into QwenVL format. If you have grounding data, please refer this file to tranform your data.
-- `pack_data.py`: Pack data into even length buckets.
+- [Fine-tuning Qwen2-VL Series](#fine-tuning-qwen2-vl-series)
+  - [Other projects](#other-projects)
+  - [Update](#update)
+  - [Table of Contents](#table-of-contents)
+  - [Supported Features](#supported-features)
+  - [Docker](#docker)
+  - [Installation](#installation)
+    - [Environments](#environments)
+    - [Using `requirements.txt`](#using-requirementstxt)
+    - [Using `environment.yaml`](#using-environmentyaml)
+  - [Dataset Preparation](#dataset-preparation)
+  - [Supervised Fine Tuning](#supervised-fine-tuning)
+    - [Full Finetuning](#full-finetuning)
+    - [Finetune with LoRA](#finetune-with-lora)
+    - [Train with video dataset](#train-with-video-dataset)
+      - [Image Resolution for vram usage](#image-resolution-for-vram-usage)
+      - [Merge LoRA Weights](#merge-lora-weights)
+  - [DPO Finetuning](#dpo-finetuning)
+  - [GRPO Finetuning](#grpo-finetuning)
+  - [Inference](#inference)
+    - [Gradio Infernce (WebUI)](#gradio-infernce-webui)
+  - [Issue for libcudnn error](#issue-for-libcudnn-error)
+  - [TODO](#todo)
+  - [Known Issues](#known-issues)
+  - [License](#license)
+  - [Citation](#citation)
+  - [Acknowledgement](#acknowledgement)
 
-## Requirements
+## Supported Features
 
-You could use follow version of packages:
+- Deepspeed
+- LoRA/QLoRA
+- Full-finetuning
+- Enable finetuning `vision_model` while using LoRA.
+- Disable/enable Flash Attention 2
+- Multi-image and video training
+- Training optimized with liger kernel
+- Mixed-modality dataset
+- Direct Preference Optimization (DPO)
+- Group Relative Policy Optimization (GRPO)
 
-- `torch==2.6.0`
-- `torchvision==0.21.0`
-- `transformers==4.50.0.dev0`
-- `deepspeed==0.16.4`
-- `flash_attn==2.7.4.post1`
-- `triton==3.0.0`
-- `accelerate==1.4.0`
-- `torchcodec==0.2`
+## Docker
 
-## Custom Dataset Configuration
+To simplfy the setting process for training, you could use the provided pre-build environments.<br>
+The settings are done in the conda env named `train`.<br><br>
+You could find more information about the image [here](https://hub.docker.com/repository/docker/john119/vlm/general).
 
-The customized data should have the format like:
-
-### JSON Data Structure
-
-**Media Specification**:
-- `image/video`: Contains path to the media file (required)
-- Media tags in prompts:
-    - `<image>` for image understanding tasks
-    - `<video>` for video understanding tasks
-- `conversations`: contains the questions and answers
-
-### Example Instances:
-
-1. **Single Image Example**:
-```json
-{
-    "image": "images/001.jpg",
-    "conversations": [
-        {
-            "from": "human",
-            "value": "<image>\nWhat's the main object in this picture?"
-        },
-        {
-            "from": "gpt",
-            "value": "A red apple on a wooden table"
-        }
-    ]
-}
+```
+docker pull john119/vlm
+docker run --gpus all -it -v /host/path:/docker/path --name vlm --ipc=host john119/vlm /bin/bash
 ```
 
-2. **Multi-Image Example**:
-```json
-{
-    "images": ["cats/001.jpg", "cats/002.jpg"],
-    "conversations": [
-        {
-            "from": "human",
-            "value": "<image>\n<image>\nWhat are the differences between these two cats?"
-        },
-        {
-            "from": "gpt",
-            "value": "The first cat is an orange tabby with short fur and green eyes, while the second is a gray Siamese with blue eyes and pointed coloration. They also appear to be in different environments - the first is indoors on a couch, the second is outdoors in a garden."
-        }
-    ]
-}
+## Installation
+
+### Environments
+
+- Ubuntu 22.04
+- Nvidia-Driver 550.120
+- Cuda version 12.4
+
+Install the required packages using `environment.yaml`.
+
+### Using `requirements.txt`
+
+```bash
+pip install -r requirements.txt -f https://download.pytorch.org/whl/cu124
+pip install qwen-vl-utils
+pip install flash-attn --no-build-isolation
 ```
 
-3. **Video Example**:
-```json
-{
-    "video": "videos/005.mp4",
-    "conversations": [
-        {
-            "from": "human",
-            "value": "<video>\nWhat caused the blue object to move?\nOptions:\n(A) Gravity\n(B) Collision\n(C) Magnetic force"
-        },
-        {
-            "from": "gpt",
-            "value": "Answer: (B) Collision"
-        }
-    ]
-}
+### Using `environment.yaml`
+
+```bash
+conda env create -f environment.yaml
+conda activate train
+pip install qwen-vl-utils
+pip install flash-attn --no-build-isolation
 ```
 
-4. **Grounding Example**:
-```json
-{
-    "image": "demo/COCO_train2014_000000580957.jpg",
-    "conversations": [
-        {
-            "from": "human",
-            "value": "<image>\nLocate house in this image and output the bbox coordinates in JSON format."
-        },
-        {
-            "from": "gpt",
-            "value": "{\n"bbox_2d": [135, 114, 1016, 672]\n}"
-        }
-    ]
-}
-```
+**Note:** You should install flash-attn after installing the other packages.
 
-5. **Packed Data Example**:
+## Dataset Preparation
+
+The script requires a dataset formatted according to the LLaVA specification. The dataset should be a JSON file where each entry contains information about conversations and images. Ensure that the image paths in the dataset match the provided `--image_folder`.<br>
+
+**When using a multi-image dataset, the image tokens should all be `<image>`, and the image file names should have been in a list.**<br><br>
+**Please see the example below and follow format your data.**
+
+<details>
+<summary>Example for single image dataset</summary>
+
 ```json
 [
-    {
-        "image": "images/001.jpg",
-        "conversations": [
-            {
-                "from": "human",
-                "value": "<image>\nWhat's the main object in this picture?"
-            },
-            {
-                "from": "gpt",
-                "value": "A red apple on a wooden table"
-            }
-        ]
-    },
-    {
-        "image": "images/002.jpg",
-        "conversations": [
-            {
-                "from": "human",
-                "value": "<image>\nWhat's the main object in this picture?"
-            },
-            {
-                "from": "gpt",
-                "value": "A green orange on a plastic table"
-            }
-        ]
-    }
+  {
+    "id": "000000033471",
+    "image": "000000033471.jpg",
+    "conversations": [
+      {
+        "from": "human",
+        "value": "<image>\nWhat are the colors of the bus in the image?"
+      },
+      {
+        "from": "gpt",
+        "value": "The bus in the image is white and red."
+      },
+      {
+        "from": "human",
+        "value": "What feature can be seen on the back of the bus?"
+      },
+      {
+        "from": "gpt",
+        "value": "The back of the bus features an advertisement."
+      },
+      {
+        "from": "human",
+        "value": "Is the bus driving down the street or pulled off to the side?"
+      },
+      {
+        "from": "gpt",
+        "value": "The bus is driving down the street, which is crowded with people and other vehicles."
+      }
+    ]
+  }
+  ...
 ]
 ```
 
-Some examples are shown in `demo/single_images.json` and `demo/video.json` and these json files could be used for training.
+</details>
 
-### Dataset config for training
+<details>
+<summary>Example for multi image dataset</summary>
 
-To add or modify datasets for training, follow these steps:
-
-### Dataset Definition Structure
-
-1. **Create a dataset dictionary** in the format in the file `data/__init__.py`:
-```python
-DATASET_NAME = {
-    "annotation_path": "/path/to/annotations.json",
-    "data_path": "/path/to/image/data",  # Can be empty if paths are in annotations
-}
+```json
+[
+  {
+    "id": "000000033471",
+    "image": ["000000033471.jpg", "000000033472.jpg"],
+    "conversations": [
+      {
+        "from": "human",
+        "value": "<image>\n<image>\nIs the perspective of the camera differnt?"
+      },
+      {
+        "from": "gpt",
+        "value": "Yes, It the perspective of the camera is different."
+      }
+    ]
+  }
+  ...
+]
 ```
 
-2. **Register your dataset** by adding it to the `data_dict`:
-```python
-data_dict = {
-    "your_dataset_name": DATASET_NAME,
-    # ... other datasets
-}
+</details>
+
+<details>
+<summary>Example for video dataset</summary>
+
+```json
+[
+  {
+    "id": "sample1",
+    "video": "sample1.mp4",
+    "conversations": [
+      {
+        "from": "human",
+        "value": "<video>\nWhat is going on in this video?"
+      },
+      {
+        "from": "gpt",
+        "value": "A man is walking down the road."
+      }
+    ]
+  }
+  ...
+]
 ```
 
-### Sampling Rate Control
+</details>
 
-You can optionally specify sampling rates by appending `%X` to the dataset name:
-- `"dataset_name%50"` will sample 50% of the data
-- `"dataset_name%20"` will sample 20% of the data
+<details>
+<summary>Example for DPO dataet</summary>
 
-### Usage Example
-
-1. Define your dataset:
-```python
-MY_DATASET = {
-    "annotation_path": "/data/my_dataset/annotations.json",
-    "data_path": "/data/my_dataset/images/",
-}
-
-data_dict = {
-    "my_dataset": MY_DATASET,
-    "cambrian_737k": CAMBRIAN_737K,  # existing dataset
-}
+```json
+[
+  {
+    "id": "e4cd017f-3854-4019-9cc1-9dacacb5d424",
+    "image": "example_0_0.png",
+    "prompt": "<image>\nDescribe the key features of the image in great detail.",
+    "chosen": "The image features a modern, multi-colored train parked on a train track, occupying a significant portion of the scene. The train has a unique and striking design, with red, white, and blue colors, as well as yellow accents. It appears to be a high-speed train, indicating its advanced engineering and potential for fast travel.\n\nThe train is situated next to a platform, suggesting that it may be at a train station. The overall scene conveys a sense of transportation and modern technology, with the vibrant and sleek train as the main subject.",
+    "rejected": "The image features a modern, colorful train parked on a set of train tracks. The train has a striking design, with red, white, and blue colors as well as yellow accents. It appears to be a high-speed train, ready for departure.\n\nThe train spans a significant portion of the image, from the left to the right side. The train tracks can be seen clearly beneath the train, emphasizing its position on the railway line. The overall scene gives off an impression of a contemporary and efficient mode of transportation."
+  },
+  {
+    "id": "5e19e647-e5d3-4bcf-82e9-d262570743ae",
+    "image": "example_1_0.png",
+    "prompt": "<image>\nIs this bus in the USA?",
+    "chosen": "Yes, based on the image, it can be assumed that this bus is in the USA. The location of the bus cannot be accurately determined.",
+    "rejected": "No, it's not in the USA. The image does not provide specific information on where the bus is located. However, we can say that it's not in the United States."
+  }
+  ...
+]
 ```
 
-2. Use it in training:
-```python
-dataset_names = ["my_dataset%50"]  # Will use 50% of your dataset
-configs = data_list(dataset_names)
+</details>
+
+<details>
+<summary>Example for GRPO dataset</summary>
+
+```json
+[
+  {
+    "id": "06bc8a17-bb1c-4007-8c08-92c41e2628b2",
+    "image": "image_2.jpg",
+    "conversations": [
+      {
+        "from": "human",
+        "value": "Based on the image, which geometric method is used to determine the bearing angle, and why is it the most appropriate choice?"
+      },
+      {
+        "from": "gpt",
+        "value": "<think>Let's analyze the image step-by-step. The image shows a right-angled triangle with points B, C, and A. The angle at point B is a right angle, indicating that trigonometric functions can be applied. To find the bearing angle, we need to relate the sides of the triangle. The tangent function is suitable here because it relates the opposite side (BC) to the adjacent side (AB) in a right-angled triangle. By using the tangent function, we can calculate the angle at point A, which is the bearing angle. Therefore, the most appropriate geometric method is the use of trigonometric functions.</think>\n\n<answer>A</answer>"
+      }
+    ]
+  }
+  ...
+]
 ```
 
-### Notes  
-- The `annotation_path` should point to a JSON or JSONL file containing your dataset annotations.  
-- The `data_path` can be left empty if the image paths in the annotations are absolute.  
-- Sampling rates are applied per-dataset when multiple datasets are specified.  
-- Some datasets you can use directly: `nyu-visionx/Cambrian-10M`, `lmms-lab/LLaVA-NeXT-Data`, `FreedomIntelligence/ALLaVA-4V`, `TIGER-Lab/VisualWebInstruct`.  
-- The training data should strictly follow this format:  
-  - One `<image>` tag in the question must correspond to exactly one image file  
-  - Similarly, `<video>` tags must correspond to video files  
-  - These special tokens should not appear in the answer text  
-- For open source data that might have missing images or other issues, you can verify data completeness using `tools/check_image.py`.  
+**Note:** You should remove all `<image>` and `<video>` tokens in your dataset. It works a bit different with other training methods.
 
+</details>
 
-## Usage
+<br><br>
 
-To train a model:
+Adding the new domain-specific data on top of the general data from open-source data will enhance downstream capabilities while retaining the foundational skills. Of course, you can also choose to fine-tune solely on the new data based on your requirements.
+
+## Supervised Fine Tuning
+
+**Note:** Deepspeed zero2 is faster than zero3, however it consumes more memory. Also, most of the time zero2 is more stable than zero3.<br><br>
+**Tip:** You could use `adamw_bnb_8bit` for optimizer to save memory.
+
+To run the training script, use the following command:
+
+### Full Finetuning
 
 ```bash
-#!/bin/bash
-# Complete QwenVL Training Launch Script with Full Parameter Documentation
-
-# ======================
-# Distributed Configuration
-# ======================
-MASTER_ADDR="127.0.0.1"                     # [Required] Master node IP for multi-GPU training
-MASTER_PORT=$(shuf -i 20000-29999 -n 1)     # Random port to avoid conflicts
-NPROC_PER_NODE=$(nvidia-smi --list-gpus | wc -l)  # Automatically detects available GPUs
-
-# ======================
-# Path Configuration
-# ======================
-MODEL_PATH="/path/to/Qwen2.5-VL-3B-Instruct"  # [ModelArguments] Pretrained model path
-OUTPUT_DIR="./checkpoints"                   # Directory for saving checkpoints
-CACHE_DIR="./cache"                          # [TrainingArguments] Cache directory for models
-
-# ======================
-# Model Configuration
-# ======================
-DATASETS="your_dataset%100"                  # [DataArguments] Dataset with sampling rate
-
-# ======================
-# Training Hyperparameters
-# ======================
-torchrun --nproc_per_node=$NPROC_PER_NODE \
-         --master_addr=$MASTER_ADDR \
-         --master_port=$MASTER_PORT \
-         qwenvl/train/train_qwen.py \
-         # Core Arguments
-         --model_name_or_path $MODEL_PATH \  # [ModelArguments] Model identifier
-         --tune_mm_llm True \                # [TrainingArguments] Train LLM or not
-         --tune_mm_vision False \            # [TrainingArguments] Train VIT or not
-         --tune_mm_mlp False \               # [TrainingArguments] Train MLP or not
-         --dataset_use $DATASETS \           # [DataArguments] Dataset specification
-         --output_dir $OUTPUT_DIR \          # Output directory for checkpoints
-         --cache_dir $CACHE_DIR \            # [TrainingArguments] Model cache location
-         
-         # Precision & Memory
-         --bf16 \                            # Use bfloat16 precision (Ampere+ GPUs)
-         --per_device_train_batch_size 4 \   # Batch size per GPU
-         --gradient_accumulation_steps 4 \   # Effective batch size multiplier
-         
-         # Learning Rate Configuration
-         --learning_rate 2e-7 \              # Base learning rate
-         --mm_projector_lr 1e-5 \            # [TrainingArguments] Projector-specific LR
-         --vision_tower_lr 1e-6 \            # [TrainingArguments] Vision encoder LR
-         --optim adamw_torch \               # [TrainingArguments] Optimizer selection
-         
-         # Sequence Configuration
-         --model_max_length 4096 \           # [TrainingArguments] Max sequence length
-         --data_flatten True \               # [DataArguments] Concatenate batch sequences
-         --data_packing True \               # [DataArguments] Using packing data
-         
-         # Image Processing
-         --max_pixels 576\*28\*28 \               # [DataArguments] Max image pixels (H*W) for image
-         --min_pixels 16\*28\*28 \                # [DataArguments] Min image pixels for image
-         # Video Processing
-         --base_interval 2 \                      # [DataArguments] Sampling time interval (seconds) between frames
-         --video_max_frames 8 \                   # [DataArguments] Max frames per video
-         --video_min_frames 4 \                   # [DataArguments] Min frames per video
-         --video_max_frame_pixels 1664\*28\*28 \  # [DataArguments] Max pixels within a frame
-         --video_min_frame_pixels 256\*28\*28 \   # [DataArguments] Min pixels within a frame
-         
-         # Training Schedule
-         --num_train_epochs 3 \              # Total training epochs
-         --warmup_ratio 0.03 \               # LR warmup proportion
-         --lr_scheduler_type "cosine" \      # Learning rate schedule
-         --weight_decay 0.01 \               # L2 regularization strength
-         
-         # Logging & Checkpoints
-         --logging_steps 10 \               # Log metrics interval
-         --save_steps 500 \                 # Checkpoint save interval
-         --save_total_limit 3 \             # Max checkpoints to keep
-         
-         # Advanced Options
-         --deepspeed zero3.json \           # DeepSpeed configuration
+bash scripts/finetune.sh
 ```
 
-The script accepts arguments in three categories:
+### Finetune with LoRA
 
-   - Flags to control which components to tune (`tune_mm_vision`, `tune_mm_mlp`, `tune_mm_llm`). If trained with both image and video data, tune_mm_vision should be False: `tune_mm_vision=False`
-   - `data_flatten` flag means data in a batch are concat into one sequence
-   - `data_packing` requires preprocess with `tools/pack_data.py`
-   - Training hyperparameters, the suggested learning rate is from 1e-6 to 2e-7
-   - Training resolution is critical for the model performances, hence `--max_pixels` and `--min_pixels` should be properly set
-   - Training with Qwen2.5-VL-32B model, you should have 8 80G GPU refering to `scripts/sft_32b.sh`
-   - `"_attn_implementation": "flash_attention_2",` could be add in the config.json of the model to use flash attention.
+**Note:** Liger-kernel won't work with QLoRA. You need to disable to use QLoRA.<br>
+If you want to train only the language model with LoRA and perform full training for the vision model:
 
+```bash
+bash scripts/finetune_lora.sh
+```
+
+If you want to train both the language model and the vision model with LoRA:
+
+```bash
+bash scripts/finetune_lora_vision.sh
+```
+
+**IMPORTANT:** If you want to tune the `embed_token` with LoRA, You need to tune `lm_head` together.
+
+<details>
+<summary>Training arguments</summary>
+
+- `--deepspeed` (str): Path to DeepSpeed config file (default: "scripts/zero2.json").
+- `--data_path` (str): Path to the LLaVA formatted training data (a JSON file). **(Required)**
+- `--image_folder` (str): Path to the images folder as referenced in the LLaVA formatted training data. **(Required)**
+- `--model_id` (str): Path to the Qwen2-VL model. **(Required)**
+- `--use_liger` (bool): Option for using liger kernel to save memory.
+- `--output_dir` (str): Output directory for model checkpoints
+- `--num_train_epochs` (int): Number of training epochs (default: 1).
+- `--per_device_train_batch_size` (int): Training batch size per GPU per forwarding step.
+- `--gradient_accumulation_steps` (int): Gradient accumulation steps (default: 4).
+- `--freeze_vision_tower` (bool): Option to freeze vision_model (default: False).
+- `--freeze_llm` (bool): Option to freeze LLM (default: False).
+- `--freeze_merger` (bool): Option to tune projector (default: False).
+- `--num_lora_modules` (int): Number of target modules to add LoRA (-1 means all layers).
+- `--vision_lr` (float): Learning rate for vision_model.
+- `--merger_lr` (float): Learning rate for merger(projector).
+- `--learning_rate` (float): Learning rate for language module.
+- `--bf16` (bool): Option for using bfloat16.
+- `--fp16` (bool): Option for using fp16.
+- `--image_min_pixels` (int): Option for minimum input tokens for image.
+- `--image_max_pixles` (int): Option for maximum maxmimum tokens for image.
+- `--video_min_pixels` (int): Option for minimum input tokens for video.
+- `--video_max_pixles` (int): Option for maximum maxmimum tokens for video.
+- `--image_resized_width` (int): Option for setting the width of the input image.
+- `--image_resized_height` (int): Option for setting the height of the input image.
+- `--video_resized_width` (int): Option for setting the width of the input video.
+- `--video_resized_height` (int): Option for setting the height of the input video.
+- `--lora_enable` (bool): Option for using LoRA.
+- `--vision_lora` (bool): Option for including `vision_tower` in LoRA module. `lora_enable` should be `True` to use this option.
+- `--use_dora` (bool): Option for using DoRA instead of LoRA. `lora_enable` should be `True` to use this option.
+- `--lora_namespan_exclude` (str): Exclude modules with namespans to add LoRA.
+- `--max_seq_length` (int): Maximum sequence length (default: 32K).
+- `--bits` (int): Quantization bits (default: 16).
+- `--disable_flash_attn2` (bool): Disable Flash Attention 2.
+- `--report_to` (str): Reporting tool (choices: 'tensorboard', 'wandb', 'none') (default: 'tensorboard').
+- `--logging_dir` (str): Logging directory (default: "./tf-logs").
+- `--lora_rank` (int): LoRA rank (default: 128).
+- `--lora_alpha` (int): LoRA alpha (default: 256).
+- `--lora_dropout` (float): LoRA dropout (default: 0.05).
+- `--logging_steps` (int): Logging steps (default: 1).
+- `--dataloader_num_workers` (int): Number of data loader workers (default: 4).
+- `--dpo_loss` (str): Loss type for dpo. (default: 'sigmoid')
+- `--precompute_ref_log_probs` (bool): Wheter to precompute the reference log probs (default: False)
+- `--beta` (float): The beta value for DPO (default: 0.1)
+
+**Note:** The learning rate of `vision_model` should be 10x ~ 5x smaller than the `language_model`.
+
+</details>
+
+### Train with video dataset
+
+You can train the model using a video dataset. You can set LoRA configs and use for LoRA too.<br>
+
+```bash
+bash scripts/finetune_video.sh
+```
+
+**Note:** When training with video, it just as multi-image so you should adjust the `max_pixels` for maximum resolution and `fps` based on the available VRAM.
+
+If you run out of vram, you can use [zero3_offload](./scripts/zero3_offload.json) instead of [zero3](./scripts/zero3_offload.json).<br>
+You could use [zero2_offload](./scripts/zero2_offload.json) for a bit faster training.
+
+#### Image Resolution for vram usage
+
+The model supprots a wide range of resolution inputs. By default, it uses the native resolution for input.
+For better performance using native or higer pixel numbers are recommended, however it takes too much memory and computation time for large images. So you could adjust the pixel numbers for it.
+The model splits the image into `token * 28 * 28` so you could just change the the token_num part in the script. <br>
+For example:
+
+```
+--image_min_pixels $((256 * 28 * 28))
+--image_max_pixels $((1280 * 28 * 28))
+--video_min_pixels $((128 * 28 * 28))
+--video_max_pixels $((768 * 28 * 28))
+```
+
+Besides you could directly set the image/video height and width to control over the memory.
+
+```
+--resized_height 448
+--resized_width 448
+```
+
+These values will be rounded to the nearest multiple of 28.
+
+#### Merge LoRA Weights
+
+```
+bash scripts/merge_lora.sh
+```
+
+**Note:** Remember to replace the paths in `finetune.sh` or `finetune_lora.sh` with your specific paths. (Also in `merge_lora.sh` when using LoRA.)
+
+## DPO Finetuning
+
+You can train the model using Direct Preference Optimization (DPO).<br>
+The process is quite similar to Supervised Fine-Tuning (SFT), and you can also apply LoRA during DPO training just like in SFT.
+
+```bash
+bash scripts/finetune_dpo.sh
+```
+
+Most of the training arugments are same as SFT, but few other arguments are added for DPO training.
+
+<details>
+<summary>Training arguments</summary>
+
+- `--dpo_loss` (str): Loss type for dpo. (default: 'sigmoid')
+- `--precompute_ref_log_probs` (bool): Wheter to precompute the reference log probs (default: False)
+- `--beta` (float): The beta value for DPO (default: 0.1)
+
+</details>
+
+## GRPO Finetuning
+
+You can traing the model using Group Relative Policy Optimization (GRPO) <br>
+The process is quite similar to Supervised Fine-Tuning (SFT), and you can also apply LoRA during GRPO training just like in SFT.<br>
+<br>
+
+### Prerequisites
+
+| What                      | Where                       | Notes                                                                                       |
+| ------------------------- | --------------------------- | ------------------------------------------------------------------------------------------- |
+| **Reward functions**      | `src/train/reward_funcs.py` | Add any function that ends with `_reward`. The training script picks them up automatically. |
+| **Custom system prompts** | `src/constants.py`          | Append your own prompt strings here.                                                        |
+
+You could start training using this script.<br>
+Before training, **Please check the dataset format once more.** The format is a bit different from other training methods.
+
+```bash
+bash scripts/finetune_grpo.sh
+```
+
+Most of the training arugments are same as SFT, but few other arguments are added for GRPO training.
+
+<details>
+<summary>Training arguments</summary>
+
+- `--temperature` (float): Generation config (default: 0.9)
+- `--top_p` (float): Generation config (default: 1.0)
+- `--top_k` (int): Generation config (default: 50)
+- `--min_p` (float): Generation config (default: None)
+- `--repetition_penalty` (float): Generation config (default: 1.0)
+- `--max_completion_length` (int): Max length for the completion (default: 256)
+- `--max_prompt_length` (int): Max length for the prompt (default: 512)
+- `--beta` (float): KL Coefficient. (default: 0.04)
+
+</details>
+
+**Note:** **Liger GRPO loss** and **vLLM back-end** are not yet supported. Both will be added soon.
+
+## Inference
+
+**Note:** You should use the merged weight when trained with LoRA.
+
+### Gradio Infernce (WebUI)
+
+1. Install gradio
+
+```
+pip install gradio
+```
+
+2. Launch app
+
+```
+python -m src.serve.app \
+    --model-path /path/to/merged/weight
+```
+
+You can launch gradio based demo with this command. This can also set some other generation configs like `repetition_penalty`, `temperature` etc.
+
+## Issue for libcudnn error
+
+```
+Could not load library libcudnn_cnn_train.so.8. Error: /usr/local/cuda-12.1/lib/libcudnn_cnn_train.so.8: undefined symbol: _ZN5cudnn3cnn34layerNormFwd_execute_internal_implERKNS_7backend11VariantPackEP11CUstream_stRNS0_18LayerNormFwdParamsERKNS1_20NormForwardOperationEmb, version libcudnn_cnn_infer.so.8
+```
+
+You could run `unset LD_LIBRARY_PATH` for this error.
+You could see this [issue](https://github.com/andimarafioti/florence2-finetuning/issues/2)
+
+## TODO
+
+- [x] Support for video data
+- [x] Add demo for multi-image and video
+- [x] Handle mixed-modality data in dataset and collator
+- [x] Support Qwen2.5-VL
+- [x] Monkey-patch liger-kernel for Qwen2.5-VL
+- [x] Update the code base to the latest transformers.
+- [x] Add DPO
+- [x] Add GRPO
+- [ ] Fix GRPO liger loss to work
+
+## Known Issues
+
+- [libcudnn issue](#issue-for-libcudnn-error)
+
+## License
+
+This project is licensed under the Apache-2.0 License. See the [LICENSE](LICENSE) file for details.
+
+## Citation
+
+If you find this repository useful in your project, please consider giving a :star: and citing:
+
+```bibtex
+@misc{Qwen2-VL-Finetuning,
+  author = {Yuwon Lee},
+  title = {Qwen2-VL-Finetune},
+  year = {2024},
+  publisher = {GitHub},
+  url = {https://github.com/2U1/Qwen2-VL-Finetune}
+}
+```
+
+## Acknowledgement
+
+This project is based on
+
+- [LLaVA-NeXT](https://github.com/LLaVA-VL/LLaVA-NeXT): An amazing open-source project of LMM.
+- [Mipha](https://github.com/zhuyiche/llava-phi): Open-source projcet of SMM with amazing capabilites.
+- [Qwen2-VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct): Awesome pretrained MLLM based on Qwen2.
+- [Liger-Kernel](https://github.com/linkedin/Liger-Kernel): Collection of Tirton kernels designed specifically for LLM training.
+- [VLM-R1](https://github.com/om-ai-lab/VLM-R1): Open-source project of Reinforcement Learning with VLMs.

@@ -1,0 +1,36 @@
+# Interactive Video Analysis Configuration
+
+confidence:
+  temporal_window_size: 5
+  confidence_threshold: 0.3
+  strictness_level: 2  # 1=loose, 2=medium, 3=strict
+
+context:
+  description_level: "general"  # "general" or "detailed"
+  medical_context: true
+  detail_threshold: 0.7
+
+performance:
+  batch_size: 10
+  max_clips_per_analysis: 1000
+
+# Predefined action classes
+actions:
+  - "walking"
+  - "sitting"
+  - "standing"
+  - "go upstair"
+  - "go downstair"
+
+# Model configuration
+model:
+  name: "Qwen/Qwen2.5-VL-72B-Instruct"
+  processor_name: "Qwen/Qwen2.5-VL-7B-Instruct"
+  max_new_tokens: 32
+  temperature: 0.1
+  do_sample: false
+
+# Video processing
+video:
+  clip_duration: 2.0  # seconds
+  supported_extensions: [".mp4", ".avi", ".mov", ".mkv", ".wmv", ".flv", ".webm"] 
