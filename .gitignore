@@ -8,3 +8,82 @@ wheels/
 
 # venv
 .venv
+
+# Model files and checkpoints (very large files)
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.pkl
+*.h5
+*.hdf5
+
+# Output directories
+output/
+qwen-vl-finetune/output/
+logs/
+annotations/
+annotated_videos/
+
+# Data directories
+data/
+cc_prompts/
+
+# Backup directories
+qwen-vl-finetune-backup/
+
+# Evaluation results
+zero_shot_results_*.json
+
+# Temporary and cache files
+*.tmp
+*.temp
+*.cache
+*.log
+*.out
+*.err
+
+# Jupyter notebooks
+*.ipynb_checkpoints/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Large video files
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Large image files
+*.png
+*.jpg
+*.jpeg
+*.tiff
+*.bmp
+
+# Docker
+docker/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Requirements and dependency files
+requirements_*.txt
+environment.yaml
