@@ -103,28 +103,27 @@ After downloading your Parkinson's disease video dataset, organize your data fol
 ```
 Qwen2.5-VL/
 ├── 📁 data/                            # 🎯 MAIN VIDEO DATA
-│   ├── video_0/                        # ✅ PRIMARY - Used by all modules
+│   ├── video_0/                        # ✅ PRIMARY - Used by all modules (535 val/test samples)
 │   │   ├── clip_000.mp4               # Individual video clips
 │   │   ├── clip_001.mp4               # Supported: .mp4, .avi, .mov, .mkv, .wmv, .flv, .webm
 │   │   ├── clip_002.mp4               
 │   │   └── ...                        # (1000+ clips typically)
-│   ├── video_1/                        # 🚀 REQUIRED for 72B training (909 samples)
-│   ├── video_2/                        # 🚀 REQUIRED for 72B training (469 samples)  
-│   ├── video_3/                        # 🚀 REQUIRED for 72B training (463 samples)
-│   ├── video_4/                        # 🚀 REQUIRED for 72B training (316 samples)
-│   ├── video_5/                        # 🚀 REQUIRED for 72B training (922 samples)
-│   └── qwen_data/                      # 🔄 AUTO-CREATED: Processed training data
-│       └── video_0/                    # 🤖 Used by 7B training (all 3,079 samples)
+│   ├── video_1/                        # 🚀 REQUIRED for training (909 samples)
+│   ├── video_2/                        # 🚀 REQUIRED for training (469 samples)  
+│   ├── video_3/                        # 🚀 REQUIRED for training (463 samples)
+│   ├── video_4/                        # 🚀 REQUIRED for training (316 samples)
+│   ├── video_5/                        # 🚀 REQUIRED for training (922 samples)
+│   └── qwen_data/                      # ❌ DEPRECATED: Contains damaged videos (not used)
 ├── 📁 annotations/                     # 🏷️ REQUIRED FOR TRAINING
 │   ├── mode2/                          # 📊 Original CSV annotations
 │   │   ├── train.csv                  # Training labels (3,079 samples)
 │   │   ├── val.csv                    # Validation labels (535 samples)  
 │   │   └── test.csv                   # Test labels (535 samples)
-│   ├── qwen_annotations/               # 🤖 7B Model Training Format
-│   │   ├── train.json                 # LLaVA-style conversation format
-│   │   ├── val.json                   # Points to qwen_data/video_0/ 
+│   ├── qwen_annotations/               # ❌ DEPRECATED: Points to damaged qwen_data/ (not used)
+│   │   ├── train.json                 
+│   │   ├── val.json                   
 │   │   └── test.json                  
-│   └── qwen_annotations_original_videos/ # 🚀 72B Model Training Format  
+│   └── qwen_annotations_original_videos/ # 🚀 TRAINING FORMAT: Used by both 7B & 72B models
 │       ├── train.json                 # Points to video_1/, video_2/, video_3/, video_4/, video_5/
 │       ├── val.json                   # Points to video_0/ (535 samples)
 │       └── test.json                  # Points to video_0/ (535 samples)
@@ -146,29 +145,17 @@ data/
 
 #### 🚀 **Module 2: LoRA Fine-Tuning**
 
-**For 7B Model Training:**
+**For Both 7B & 72B Model Training:**
 ```
 data/
-├── qwen_data/         # 🔄 AUTO-CREATED by preprocessing
-│   └── video_0/       # Contains all 3,079 training samples
-annotations/
-└── qwen_annotations/   # Points to qwen_data/video_0/
-    ├── train.json     
-    ├── val.json       
-    └── test.json      
-```
-
-**For 72B Model Training:**
-```
-data/
-├── video_0/           # 535 val/test samples  
+├── video_0/           # ✅ REQUIRED: 535 val/test samples  
 ├── video_1/           # ✅ REQUIRED: 909 training samples
 ├── video_2/           # ✅ REQUIRED: 469 training samples
 ├── video_3/           # ✅ REQUIRED: 463 training samples
 ├── video_4/           # ✅ REQUIRED: 316 training samples
 └── video_5/           # ✅ REQUIRED: 922 training samples
 annotations/
-└── qwen_annotations_original_videos/  # Points to original video_*/ folders
+└── qwen_annotations_original_videos/  # Used by both 7B & 72B models
     ├── train.json     # Uses video_1, video_2, video_3, video_4, video_5
     ├── val.json       # Uses video_0 
     └── test.json      # Uses video_0
@@ -204,18 +191,18 @@ parkinson_proj/web_application/output/  # 🔄 AUTO-CREATED: Analysis exports
 
 **Two annotation formats are provided:**
 
-1. **`qwen_annotations/`** - For 7B model training:
+1. **`qwen_annotations/`** - ❌ **DEPRECATED** (points to damaged qwen_data/):
    ```json
    {
-     "video": "qwen_data/video_0/clip_504.mp4",  // Points to processed data
+     "video": "qwen_data/video_0/clip_504.mp4",  // Points to damaged processed data
      "conversations": [{"from": "human", "value": "<video>\nWhat action is being performed?"}]
    }
    ```
 
-2. **`qwen_annotations_original_videos/`** - For 72B model training:
+2. **`qwen_annotations_original_videos/`** - ✅ **CURRENT** (used by both 7B & 72B):
    ```json
    {
-     "video": "video_1/clip_504.mp4",  // Points to original data folders
+     "video": "video_1/clip_504.mp4",  // Points to original video folders
      "conversations": [{"from": "human", "value": "<video>\nWhat action is being performed?"}]
    }
    ```
@@ -224,21 +211,21 @@ parkinson_proj/web_application/output/  # 🔄 AUTO-CREATED: Analysis exports
 
 #### **Minimum Requirements by Module:**
 - **Module 1 (Zero-shot)**: Only needs `data/video_0/`
-- **Module 2 (7B Training)**: Needs `data/qwen_data/video_0/` + `annotations/qwen_annotations/`
-- **Module 2 (72B Training)**: Needs `data/video_0/`, `video_1/`, `video_2/`, `video_3/`, `video_4/`, `video_5/` + `annotations/qwen_annotations_original_videos/`
+- **Module 2 (Both 7B & 72B Training)**: Needs `data/video_0/`, `video_1/`, `video_2/`, `video_3/`, `video_4/`, `video_5/` + `annotations/qwen_annotations_original_videos/`
 - **Module 3 (Web App)**: Uses `data/video_0/` by default
 
-#### **Key Differences:**
-- **7B training**: Uses processed data in `qwen_data/video_0/` (all samples merged)
-- **72B training**: Uses original data split across `video_1/` through `video_5/` for training, `video_0/` for validation/testing
-- **Both models**: Validate and test on `video_0/` clips
+#### **Key Changes:**
+- **⚠️ IMPORTANT**: `data/qwen_data/` contains **damaged videos** and is no longer used
+- **Both 7B & 72B training**: Now use original data split across `video_1/` through `video_5/` for training
+- **Both models**: Use `video_0/` for validation and testing
+- **Annotation format**: Both models use `annotations/qwen_annotations_original_videos/`
 - The `output/` folder is automatically created during training
 - Supported formats: `.mp4`, `.avi`, `.mov`, `.mkv`, `.wmv`, `.flv`, `.webm`
 
 #### **Missing Folders Impact:**
-- Missing `video_1/` through `video_5/`: 72B training will **fail**
-- Missing `video_0/`: All modules will **fail** 
-- Missing `qwen_data/`: 7B training will **fail** (auto-created by preprocessing)
+- Missing `video_1/` through `video_5/`: **Both 7B & 72B training will fail**
+- Missing `video_0/`: **All modules will fail** 
+- Missing `qwen_data/`: No impact (deprecated folder with damaged videos)
 - Missing annotations: Training will **fail**, zero-shot/web app still work
 
 ## 🚀 Commands for Each Module

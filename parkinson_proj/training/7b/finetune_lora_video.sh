@@ -13,8 +13,9 @@ cd /mnt/arc/yygx/pkgs_baselines/Qwen2.5-VL/qwen-vl-finetune
 MODEL_NAME="Qwen/Qwen2.5-VL-7B-Instruct"
 
 # Data paths (edit these as needed)
-DATA_PATH="../annotations/qwen_annotations/train.json"  # Path to your LLaVA-style JSON
-IMAGE_FOLDER="../data"                                 # Root folder containing video_*/
+DATA_PATH="../annotations/qwen_annotations_original_videos/train.json"  # Path to your LLaVA-style JSON
+EVAL_DATA_PATH="../annotations/qwen_annotations_original_videos/val.json"  # Path to validation JSON
+IMAGE_FOLDER="../data"                                 # Root folder containing original video_*/ (not qwen_data)
 
 # Output
 OUTPUT_DIR="../output/lora_video_action_7b_merged"
@@ -25,6 +26,11 @@ BATCH_PER_DEVICE=2
 NUM_DEVICES=8
 GRAD_ACCUM_STEPS=$((GLOBAL_BATCH_SIZE / (BATCH_PER_DEVICE * NUM_DEVICES)))
 EPOCHS=3
+
+# Validation configuration
+EVAL_STRATEGY="steps"
+EVAL_STEPS=50
+EVAL_ACCUMULATION_STEPS=4
 
 # LoRA configuration
 LORA_RANK=64
@@ -60,6 +66,7 @@ deepspeed src/train/train_sft.py \
     --deepspeed $DEEPSPEED_CONFIG \
     --model_id $MODEL_NAME \
     --data_path $DATA_PATH \
+    --eval_data_path $EVAL_DATA_PATH \
     --image_folder $IMAGE_FOLDER \
     --remove_unused_columns False \
     --freeze_vision_tower False \
@@ -72,6 +79,9 @@ deepspeed src/train/train_sft.py \
     --num_train_epochs $EPOCHS \
     --per_device_train_batch_size $BATCH_PER_DEVICE \
     --gradient_accumulation_steps $GRAD_ACCUM_STEPS \
+    --eval_strategy $EVAL_STRATEGY \
+    --eval_steps $EVAL_STEPS \
+    --eval_accumulation_steps $EVAL_ACCUMULATION_STEPS \
     --video_min_pixels $VIDEO_MIN_PIXELS \
     --video_max_pixels $VIDEO_MAX_PIXELS \
     --fps $FPS \
