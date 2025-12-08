@@ -92,3 +92,4 @@ environment.yaml
 to_be_cleaned/
 
 venv
+models/
