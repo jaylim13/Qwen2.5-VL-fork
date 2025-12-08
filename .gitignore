@@ -92,6 +92,4 @@ environment.yaml
 to_be_cleaned/
 
 venv
-models/*.zip
-models/
 models/
