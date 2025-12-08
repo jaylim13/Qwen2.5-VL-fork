@@ -1,0 +1,110 @@
+{
+  "Sitting": [
+    {
+      "Starting frame": 1,
+      "Ending frame": 120
+    },
+    {
+      "Starting frame": 331,
+      "Ending frame": 390
+    },
+    {
+      "Starting frame": 1801,
+      "Ending frame": 2331
+    }
+  ],
+  "Standing still": [
+    {
+      "Starting frame": 151,
+      "Ending frame": 270
+    },
+    {
+      "Starting frame": 301,
+      "Ending frame": 330
+    },
+    {
+      "Starting frame": 421,
+      "Ending frame": 480
+    },
+    {
+      "Starting frame": 541,
+      "Ending frame": 600
+    },
+    {
+      "Starting frame": 661,
+      "Ending frame": 690
+    },
+    {
+      "Starting frame": 721,
+      "Ending frame": 780
+    },
+    {
+      "Starting frame": 811,
+      "Ending frame": 960
+    },
+    {
+      "Starting frame": 1051,
+      "Ending frame": 1170
+    },
+    {
+      "Starting frame": 1321,
+      "Ending frame": 1350
+    },
+    {
+      "Starting frame": 1531,
+      "Ending frame": 1560
+    },
+    {
+      "Starting frame": 1591,
+      "Ending frame": 1800
+    }
+  ],
+  "Walking": [
+    {
+      "Starting frame": 121,
+      "Ending frame": 150
+    },
+    {
+      "Starting frame": 271,
+      "Ending frame": 300
+    },
+    {
+      "Starting frame": 391,
+      "Ending frame": 420
+    },
+    {
+      "Starting frame": 481,
+      "Ending frame": 540
+    },
+    {
+      "Starting frame": 601,
+      "Ending frame": 660
+    },
+    {
+      "Starting frame": 691,
+      "Ending frame": 720
+    },
+    {
+      "Starting frame": 781,
+      "Ending frame": 810
+    },
+    {
+      "Starting frame": 961,
+      "Ending frame": 1050
+    },
+    {
+      "Starting frame": 1171,
+      "Ending frame": 1320
+    },
+    {
+      "Starting frame": 1351,
+      "Ending frame": 1530
+    },
+    {
+      "Starting frame": 1561,
+      "Ending frame": 1590
+    }
+  ],
+  "Upstair": [],
+  "Downstair": []
+}

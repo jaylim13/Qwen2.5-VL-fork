@@ -90,3 +90,5 @@ environment.yaml
 
 # Large directories to be cleaned up
 to_be_cleaned/
+
+venv

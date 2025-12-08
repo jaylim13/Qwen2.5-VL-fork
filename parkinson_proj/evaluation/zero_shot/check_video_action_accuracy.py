@@ -18,8 +18,8 @@ args = parser.parse_args()
 
 # Paths
 RESULTS_JSON = args.results_json
-ANNOT_DIR = "/mnt/arc/yygx/pkgs_baselines/EgoVLPv2/EgoVLPv2/annotations/mode2"
-ANNOT_FILES = ["train.csv", "val.csv", "test.csv"]
+ANNOT_DIR = "annotations"
+ANNOT_FILES = ["ground_truth.csv"]
 
 # 1. Load all ground truth annotations
 gt_labels = {}
