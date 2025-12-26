@@ -7,8 +7,8 @@
 #SBATCH --qos=gpu_access
 #SBATCH --gres=gpu:1
 #SBATCH --job-name=qwen_eval
-#SBATCH --output=logs/qwen_eval_%j.out
-#SBATCH --error=logs/qwen_eval_%j.err
+#SBATCH --output=/Users/jayden/Qwen2.5-VL/logs/qwen_eval_%j.out
+#SBATCH --error=/Users/jayden/Qwen2.5-VL/logs/qwen_eval_%j.err
 
 # ----------------------------
 # Load modules and environment
@@ -26,6 +26,6 @@ nvidia-smi
 # Run your evaluation script
 # ----------------------------
 python parkinson_proj/evaluation/zero_shot/analyze_video_actions.py \
-    --video_folder "data/video_j" \
+    --video_folder "data/video_j2" \
     --output_file "parkinson_proj/evaluation/evaluation_results/zero_shot_7b_results.json" \
-    --model_id "Qwen/Qwen2.5-VL-7B-Instruct"
+    --model_id "model/yue_model"

@@ -2,22 +2,45 @@
 
 ## 📖 Table of Contents
 
-- [📋 Overview](#-overview)
-- [🏗️ Project Structure](#️-project-structure)
-- [📁 File Layout](#-file-layout)
-- [📁 Data Folder Setup](#-data-folder-setup)
-  - [🔧 Required Data Structure](#-required-data-structure)
-  - [📋 Module-Specific Requirements](#-module-specific-requirements)
-  - [📋 Dataset Analysis](#-dataset-analysis)
-  - [🔄 Annotation Format Differences](#-annotation-format-differences)
-  - [⚠️ Critical Setup Notes](#️-critical-setup-notes)
-- [🚀 Commands for Each Module](#-commands-for-each-module)
-  - [🔍 Module 1: Zero-Shot Evaluation](#-module-1-zero-shot-evaluation)
-  - [🚀 Module 2: LoRA Fine-Tuning & Evaluation](#-module-2-lora-fine-tuning--evaluation)
-  - [📊 PD Insighter Format Output](#-pd-insighter-format-output)
-  - [🌐 Module 3: Interactive Web Application](#-module-3-interactive-web-application)
-- [🎯 Quick Start](#-quick-start)
-- [📚 Additional Resources](#-additional-resources)
+- [🧠 Qwen2.5-VL Parkinson's Disease Video Analysis Project](#-qwen25-vl-parkinsons-disease-video-analysis-project)
+  - [📖 Table of Contents](#-table-of-contents)
+  - [📋 Overview](#-overview)
+  - [🏗️ Project Structure](#️-project-structure)
+    - [🔍 Module 1: Zero-Shot Evaluation](#-module-1-zero-shot-evaluation)
+    - [🚀 Module 2: LoRA Fine-Tuning \& Evaluation](#-module-2-lora-fine-tuning--evaluation)
+    - [🌐 Module 3: Interactive Web Application](#-module-3-interactive-web-application)
+  - [📁 File Layout](#-file-layout)
+  - [📁 Data Folder Setup](#-data-folder-setup)
+    - [🔧 **Required Data Structure**](#-required-data-structure)
+    - [📋 **Module-Specific Requirements**](#-module-specific-requirements)
+      - [🔍 **Module 1: Zero-Shot Evaluation**](#-module-1-zero-shot-evaluation-1)
+      - [🚀 **Module 2: LoRA Fine-Tuning**](#-module-2-lora-fine-tuning)
+      - [🌐 **Module 3: Web Application**](#-module-3-web-application)
+    - [📋 **Dataset Analysis**](#-dataset-analysis)
+    - [🔄 **Annotation Format Differences**](#-annotation-format-differences)
+    - [⚠️ **Critical Setup Notes**](#️-critical-setup-notes)
+      - [**Minimum Requirements by Module:**](#minimum-requirements-by-module)
+      - [**Key Changes:**](#key-changes)
+      - [**Missing Folders Impact:**](#missing-folders-impact)
+  - [🚀 Commands for Each Module](#-commands-for-each-module)
+    - [🔍 Module 1: Zero-Shot Evaluation](#-module-1-zero-shot-evaluation-2)
+      - [Zero-Shot Analysis (7B Model)](#zero-shot-analysis-7b-model)
+      - [Zero-Shot Analysis (72B Model)](#zero-shot-analysis-72b-model)
+      - [Calculate Accuracy (7B Model)](#calculate-accuracy-7b-model)
+      - [Calculate Accuracy (72B Model)](#calculate-accuracy-72b-model)
+      - [Video Annotation](#video-annotation)
+    - [🚀 Module 2: LoRA Fine-Tuning \& Evaluation](#-module-2-lora-fine-tuning--evaluation-1)
+      - [LoRA Fine-Tuning (7B Model)](#lora-fine-tuning-7b-model)
+      - [LoRA Fine-Tuning (72B Model)](#lora-fine-tuning-72b-model)
+      - [Evaluate Fine-Tuned Model (7B)](#evaluate-fine-tuned-model-7b)
+      - [Evaluate Fine-Tuned Model (72B)](#evaluate-fine-tuned-model-72b)
+    - [📊 **PD Insighter Format Output**](#-pd-insighter-format-output)
+    - [🌐 Module 3: Interactive Web Application](#-module-3-interactive-web-application-1)
+      - [Launch Web Application](#launch-web-application)
+      - [Web Application Interaction Steps](#web-application-interaction-steps)
+  - [🎯 Quick Start](#-quick-start)
+  - [📚 Additional Resources](#-additional-resources)
+- [Jayden Stuff](#jayden-stuff)
 
 ## 📋 Overview
 
@@ -477,3 +500,39 @@ python scripts/web_app.py --interface web
 - **Web App Guide**: Run `python scripts/web_app.py --help`
 
 For detailed technical documentation, check the module-specific README files in each directory.
+
+# Jayden Stuff 
+
+To split the video into 2-sec clips, run the following Bash command: 
+
+```
+ffmpeg -i jayden4.mp4 \
+  -vf fps=30 \
+  -vsync cfr \
+  -force_key_frames "expr:gte(t,0)+gte(t,n_forced*2)" \
+  -map 0 \
+  -c:v libx264 \
+  -c:a aac \
+  -f segment \
+  -segment_time 2 \
+  -reset_timestamps 1 \
+  data/video_j4/clip%04d.mp4
+
+```
+To evaluate the model: 
+
+```
+python parkinson_proj/evaluation/zero_shot/analyze_video_actions.py \
+  --video_folder "data/video_j2" \
+  --output_file "parkinson_proj/evaluation/evaluation_results/jayden2_zero_shot_7b_results_2_sec.json" \
+  --model_id "models/yue_model"
+
+```
+
+To evaluate the accuracy: 
+
+```
+python parkinson_proj/evaluation/zero_shot/check_video_action_accuracy.py \
+    --results_json "parkinson_proj/evaluation/evaluation_results/zero_shot_7b_results.json"
+
+```
