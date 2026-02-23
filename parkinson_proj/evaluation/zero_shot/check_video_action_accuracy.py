@@ -18,8 +18,9 @@ args = parser.parse_args()
 
 # Paths
 RESULTS_JSON = args.results_json
-ANNOT_DIR = "annotations"
-ANNOT_FILES = ["ground_truth.csv"]
+ANNOT_DIR = "annotations/video_j" \
+""
+ANNOT_FILES = ["labels.csv"]
 
 # 1. Load all ground truth annotations
 gt_labels = {}

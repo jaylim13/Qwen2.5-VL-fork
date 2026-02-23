@@ -16,15 +16,14 @@ from typing import List, Dict
 
 # Predefined action classes
 ACTIONS = ["walking", "sitting", "standing", "go upstair", "go downstair"]
-# base_model_id = "Qwen/Qwen2.5-VL-7B-Instruct"
-base_model_id = "models/yue_model"
+base_model_id = "Qwen/Qwen2.5-VL-7B-Instruct"
 def load_model(model_id):
     """Load the Qwen2.5-VL model"""
     print(f"🔄 Loading Qwen2.5-VL model: {model_id}...")
     model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
         model_id,
         dtype=torch.bfloat16,
-        device_map="auto"
+        device_map="cpu"
     )
     processor = AutoProcessor.from_pretrained(base_model_id)
     print("✅ Model loaded successfully!")
@@ -162,10 +161,10 @@ def parse_args():
                        help="Path to folder containing video files")
     parser.add_argument("--output_file", type=str, required=True,
                        help="Path to output JSON file for results")
-    # parser.add_argument("--model_id", type=str, default="Qwen/Qwen2.5-VL-72B-Instruct",
-    #                    help="Model ID to use for classification")
-    parser.add_argument("--model_id", type=str, default="models/yue_model",
-                        help="Model ID to use for classification")
+    parser.add_argument("--model_id", type=str, default="Qwen/Qwen2.5-VL-7B-Instruct",
+                       help="Model ID to use for classification")
+    # parser.add_argument("--model_id", type=str, default="models/yue_model",
+    #                     help="Model ID to use for classification")
     
     args = parser.parse_args()
     

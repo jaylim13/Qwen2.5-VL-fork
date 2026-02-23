@@ -1,0 +1,74 @@
+Video,Index,Labeled,Actual
+Video_h,5,Walking,"Standing mostly then shuffling feet"
+Video_h,8,Standing,"Walking slowly"
+Video_h,9,Standing,"Walking then standing still"
+Video_h,10,Walking,Upstair
+Video_h,11,Standing,Upstair
+Video_h,12,Standing,Upstair
+Video_h,13,Standing,Upstair
+Video_h,14,Walking,Upstair
+Video_h,15,Walking,Upstair
+Video_h,16,Walking,"Standing but slight shuffle and torso movement"
+Video_h,18,Standing,Walking
+Video_h,24,Walking,Downstair
+Video_h,25,Walking,Downstair
+Video_h,26,Walking,Downstair
+Video_h,27,Standing,Downstair
+Video_h,29,Standing,Walking
+Video_h,30,Standing,Walking
+
+Video_j,2,Walking,"Standing while looking around"
+Video_j,3,Walking,Downstair
+Video_j,7,Walking,Downstair
+Video_j,8,Walking,Downstair
+Video_j,9,Walking,Downstair
+Video_j,10,Walking,Downstair
+Video_j,11,Walking,Downstair
+Video_j,12,Walking,Downstair
+Video_j,13,Walking,Downstair
+Video_j,16,Walking,Upstair
+Video_j,17,Walking,Upstair
+Video_j,18,Walking,Upstair
+Video_j,19,Walking,Upstair
+Video_j,20,Walking,Upstair
+Video_j,21,Walking,Upstair
+Video_j,22,Walking,Upstair
+
+Video_j2,3,Standing,Walking
+Video_j2,4,Standing,Walking
+Video_j2,8,Standing,Walking
+Video_j2,9,Standing,Walking
+Video_j2,15,Walking,Downstair
+Video_j2,16,Standing,Downstair
+Video_j2,18,Walking,"Standing looking around"
+Video_j2,19,Standing,"Walking clearly looked at foot moving forward"
+Video_j2,20,Walking,Downstair
+Video_j2,21,Walking,"Standing looking around"
+Video_j2,22,Walking,Downstair
+Video_j2,23,Walking,Downstair
+Video_j2,24,Walking,Downstair
+Video_j2,25,Standing,Downstair
+Video_j2,26,Standing,"Walking to Standing"
+Video_j2,27,Walking,"Standing looking around"
+Video_j2,29,Standing,Walking
+Video_j2,30,Standing,"Walking but slower"
+Video_j2,32,Walking,"Standing looking around"
+Video_j2,33,Walking,"Standing looking around"
+Video_j2,34,Walking,"Standing wobbling"
+Video_j2,35,Walking,"Standing wobbling"
+Video_j2,36,Standing,"Standing to Walking"
+Video_j2,37,Walking,Standing
+Video_j2,38,Standing,Walking
+Video_j2,39,Walking,"Standing looking around"
+Video_j2,40,Walking,"Standing looking around"
+Video_j2,41,Walking,"Standing looking around"
+Video_j2,49,Walking,"Upstair dark"
+Video_j2,50,Walking,"Upstair dark"
+Video_j2,51,Walking,"Upstair dark"
+Video_j2,52,Standing,"Upstair dark"
+Video_j2,53,Walking,"Standing looking around"
+Video_j2,54,Walking,"Standing wobbling"
+Video_j2,55,Walking,Upstair
+Video_j2,56,Walking,Upstair
+Video_j2,57,Walking,Upstair
+Video_j2,61,Sitting,"Walking towards desk but haven’t sat yet"
