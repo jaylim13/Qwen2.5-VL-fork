@@ -16,17 +16,7 @@ from typing import List, Dict
 
 # Predefined action classes
 ACTIONS = ["walking", "sitting", "standing", "go upstair", "go downstair"]
-SLAM_SUMMARY_FILE = "data/video_h/henry_slam_clip_summaries.json"
-# GUIDELINES = """
-# You must classify the video clip with corresponding textual data into exactly one of the following actions: ["walking", "sitting", "standing", "go upstair", "go downstair"]
-
-# "walking": noticeable horizontal displacement and speed, litle-to-no vertical displacement
-# "sitting": little-to-no horizontal displacement, negative vertical displacement may have ocurred
-# "standing": little-to-no horizontal displacement, positive vertical displacement may have occured, the user is NOT progressing forward
-# "go upstair": noticeable horizontal displacement, positive vertical displacement, and noticeable speed, there are stairs or steps in view, user is ascending
-# "go downstair": noticeable horizontal displacement, negative vertical displacement, and noticeable speed, there are stairs or steps in view,user is descending
-
-# """
+SLAM_SUMMARY_FILE = "data/video_j/jayden_slam_clip_summaries.json"
 
 def load_slam_summaries(path):
     with open(path, "r") as f:
@@ -74,22 +64,11 @@ def classify_video_action(model, processor, video_path: str, slam_text: str) -> 
     """Classify action in a single video clip"""
 
     prompt = (
-        "You are classifying a first-person video clip using BOTH the video and the motion data below.\n\n"
-        "Motion data summary:\n"
+        "The following motion data was captured from the headset during this video clip:\n"
         f"{slam_text}\n\n"
-        "Classify the action into EXACTLY ONE of the following classes:\n"
-        f"{', '.join(ACTIONS)}\n\n"
-        "Action definitions:\n"
-        "- walking: clear horizontal translation over time, moderate speed, minimal vertical displacement\n"
-        "- sitting: very low speed, minimal horizontal translation, negative vertical displacement may occur\n"
-        "- standing: little to no horizontal translation, may include rotation in place (looking around), "
-        "low linear displacement, user is NOT progressing forward\n"
-        "- go upstair: forward translation with noticeable positive vertical displacement and sustained speed, stairs visible\n"
-        "- go downstair: forward translation with noticeable negative vertical displacement and sustained speed, stairs visible\n\n"
-        "Important rules:\n"
-        "- Rotation in place without forward translation indicates standing, NOT walking.\n"
-        "- Use motion data to determine displacement and speed.\n"
-        "- Respond with ONLY the action name, nothing else."
+        "Analyze the video clip and classify the action being performed.\n"
+        f"Choose ONLY ONE action from this list: {', '.join(ACTIONS)}\n\n"
+        "Respond with just the action name, nothing else."
     )
 
     messages = [

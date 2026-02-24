@@ -4,216 +4,216 @@
     "raw_response": "sitting",
     "classified_action": "sitting",
     "confidence": "high",
-    "processing_time": 13.673426151275635
+    "processing_time": 11.861224889755249
   },
   {
     "video_path": "data/video_j/video_clips/clip0001.mp4",
     "raw_response": "sitting",
     "classified_action": "sitting",
     "confidence": "high",
-    "processing_time": 7.961107969284058
+    "processing_time": 6.448563098907471
   },
   {
     "video_path": "data/video_j/video_clips/clip0002.mp4",
     "raw_response": "sitting",
     "classified_action": "sitting",
     "confidence": "high",
-    "processing_time": 7.941271066665649
+    "processing_time": 6.444463729858398
   },
   {
     "video_path": "data/video_j/video_clips/clip0003.mp4",
-    "raw_response": "standing",
-    "classified_action": "standing",
+    "raw_response": "walking",
+    "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 7.810502052307129
+    "processing_time": 6.301678657531738
   },
   {
     "video_path": "data/video_j/video_clips/clip0004.mp4",
     "raw_response": "walking",
     "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 7.785299062728882
+    "processing_time": 6.334095001220703
   },
   {
     "video_path": "data/video_j/video_clips/clip0005.mp4",
     "raw_response": "walking",
     "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 7.80271315574646
+    "processing_time": 6.280886650085449
   },
   {
     "video_path": "data/video_j/video_clips/clip0006.mp4",
     "raw_response": "walking",
     "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 7.794583082199097
+    "processing_time": 6.275118112564087
   },
   {
     "video_path": "data/video_j/video_clips/clip0007.mp4",
     "raw_response": "go downstair",
     "classified_action": "go downstair",
     "confidence": "high",
-    "processing_time": 8.27127194404602
+    "processing_time": 6.722021102905273
   },
   {
     "video_path": "data/video_j/video_clips/clip0008.mp4",
     "raw_response": "go downstair",
     "classified_action": "go downstair",
     "confidence": "high",
-    "processing_time": 8.348485946655273
+    "processing_time": 6.801136016845703
   },
   {
     "video_path": "data/video_j/video_clips/clip0009.mp4",
     "raw_response": "go downstair",
     "classified_action": "go downstair",
     "confidence": "high",
-    "processing_time": 8.240562200546265
+    "processing_time": 6.6808459758758545
   },
   {
     "video_path": "data/video_j/video_clips/clip0010.mp4",
     "raw_response": "go downstair",
     "classified_action": "go downstair",
     "confidence": "high",
-    "processing_time": 8.31385588645935
+    "processing_time": 6.67427396774292
   },
   {
     "video_path": "data/video_j/video_clips/clip0011.mp4",
     "raw_response": "go downstair",
     "classified_action": "go downstair",
     "confidence": "high",
-    "processing_time": 8.378836154937744
+    "processing_time": 6.6761980056762695
   },
   {
     "video_path": "data/video_j/video_clips/clip0012.mp4",
-    "raw_response": "walking",
-    "classified_action": "walking",
+    "raw_response": "go downstair",
+    "classified_action": "go downstair",
     "confidence": "high",
-    "processing_time": 7.993073225021362
+    "processing_time": 6.686691045761108
   },
   {
     "video_path": "data/video_j/video_clips/clip0013.mp4",
     "raw_response": "walking",
     "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 7.93422532081604
+    "processing_time": 6.279052019119263
   },
   {
     "video_path": "data/video_j/video_clips/clip0014.mp4",
     "raw_response": "walking",
     "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 7.854621887207031
+    "processing_time": 6.274881839752197
   },
   {
     "video_path": "data/video_j/video_clips/clip0015.mp4",
     "raw_response": "walking",
     "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 7.881481885910034
+    "processing_time": 6.281096935272217
   },
   {
     "video_path": "data/video_j/video_clips/clip0016.mp4",
-    "raw_response": "go downstair",
-    "classified_action": "go downstair",
+    "raw_response": "go upstair",
+    "classified_action": "go upstair",
     "confidence": "high",
-    "processing_time": 8.48542594909668
+    "processing_time": 6.736188173294067
   },
   {
     "video_path": "data/video_j/video_clips/clip0017.mp4",
-    "raw_response": "go downstair",
-    "classified_action": "go downstair",
+    "raw_response": "go upstair",
+    "classified_action": "go upstair",
     "confidence": "high",
-    "processing_time": 8.320904731750488
+    "processing_time": 6.684471845626831
   },
   {
     "video_path": "data/video_j/video_clips/clip0018.mp4",
-    "raw_response": "go downstair",
-    "classified_action": "go downstair",
+    "raw_response": "go upstair",
+    "classified_action": "go upstair",
     "confidence": "high",
-    "processing_time": 8.557309865951538
+    "processing_time": 6.742512226104736
   },
   {
     "video_path": "data/video_j/video_clips/clip0019.mp4",
     "raw_response": "go downstair",
     "classified_action": "go downstair",
     "confidence": "high",
-    "processing_time": 8.329810857772827
+    "processing_time": 6.695035934448242
   },
   {
     "video_path": "data/video_j/video_clips/clip0020.mp4",
     "raw_response": "go downstair",
     "classified_action": "go downstair",
     "confidence": "high",
-    "processing_time": 8.282556056976318
+    "processing_time": 6.68303108215332
   },
   {
     "video_path": "data/video_j/video_clips/clip0021.mp4",
-    "raw_response": "go downstair",
-    "classified_action": "go downstair",
+    "raw_response": "go upstair",
+    "classified_action": "go upstair",
     "confidence": "high",
-    "processing_time": 8.241073846817017
+    "processing_time": 6.685903787612915
   },
   {
     "video_path": "data/video_j/video_clips/clip0022.mp4",
-    "raw_response": "go downstair",
-    "classified_action": "go downstair",
+    "raw_response": "go upstair",
+    "classified_action": "go upstair",
     "confidence": "high",
-    "processing_time": 8.399896144866943
+    "processing_time": 6.687877893447876
   },
   {
     "video_path": "data/video_j/video_clips/clip0023.mp4",
-    "raw_response": "go downstair",
-    "classified_action": "go downstair",
+    "raw_response": "walking",
+    "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 8.359993934631348
+    "processing_time": 6.27810525894165
   },
   {
     "video_path": "data/video_j/video_clips/clip0024.mp4",
     "raw_response": "walking",
     "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 7.9650490283966064
+    "processing_time": 6.276627063751221
   },
   {
     "video_path": "data/video_j/video_clips/clip0025.mp4",
     "raw_response": "walking",
     "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 7.925522804260254
+    "processing_time": 6.28386378288269
   },
   {
     "video_path": "data/video_j/video_clips/clip0026.mp4",
     "raw_response": "walking",
     "classified_action": "walking",
     "confidence": "high",
-    "processing_time": 7.848243951797485
+    "processing_time": 6.290376901626587
   },
   {
     "video_path": "data/video_j/video_clips/clip0027.mp4",
-    "raw_response": "walking",
-    "classified_action": "walking",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
     "confidence": "high",
-    "processing_time": 7.948122978210449
+    "processing_time": 6.426334857940674
   },
   {
     "video_path": "data/video_j/video_clips/clip0028.mp4",
-    "raw_response": "walking",
-    "classified_action": "walking",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
     "confidence": "high",
-    "processing_time": 7.935436964035034
+    "processing_time": 6.4990880489349365
   },
   {
     "video_path": "data/video_j/video_clips/clip0029.mp4",
     "raw_response": "sitting",
     "classified_action": "sitting",
     "confidence": "high",
-    "processing_time": 8.095648050308228
+    "processing_time": 6.151005029678345
   },
   {
     "video_path": "data/video_j/video_clips/clip0030.mp4",
     "raw_response": "sitting",
     "classified_action": "sitting",
     "confidence": "high",
-    "processing_time": 7.9781999588012695
+    "processing_time": 5.9045491218566895
   }
 ]
