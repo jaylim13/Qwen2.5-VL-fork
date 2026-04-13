@@ -1,90 +1,91 @@
+#!/usr/bin/env python3
+"""
+Convert clip-level JSON to frame-range JSON format.
+Produces two output files:
+  - one using predicted_label
+  - one using model_prediction
+Assumes 30 FPS and 2-second clips (60 frames per clip).
+"""
+
 import json
+from pathlib import Path
 
-def convert_clips_to_frames(input_file, output_file, frames_per_clip=30, total_frames=None):
+# ==========================
+# CONFIG
+# ==========================
+INPUT_FILE = Path("predicted_vs_actual_2/video_4_hybrid.json")
+OUTPUT_PREDICTED = Path("frames_predicted_label_4.json")
+OUTPUT_MODEL     = Path("frames_model_prediction_4.json")
+
+FPS             = 30
+FRAMES_PER_CLIP = FPS * 2  # 60 frames per 2-second clip
+
+# Map from action_label values → output JSON keys
+LABEL_MAP = {
+    "sitting":      "Sitting",
+    "standing":     "Standing still",
+    "walking":      "Walking",
+    "go upstair":   "Upstair",
+    "go downstair": "Downstair",
+}
+
+# ==========================
+# CONVERSION FUNCTION
+# ==========================
+def clips_to_frames(data, field):
     """
-    Convert video clip classifications to frame-based format.
-    
-    Args:
-        input_file: Path to input JSON file with clip classifications
-        output_file: Path to output JSON file
-        frames_per_clip: Number of frames in each clip (default: 30)
-        total_frames: Total number of actual frames extracted (optional, for accurate end frame)
+    Convert clip list to frame ranges grouped by action label.
+    Merges consecutive clips with the same label into a single range.
     """
-    
-    # Load input data
-    with open(input_file, 'r') as f:
-        clips = json.load(f)
-    
-    # Initialize output structure with proper capitalization
-    output = {
-        "Sitting": [],
-        "Standing still": [],
-        "Walking": [],
-        "Upstair": [],
-        "Downstair": []
-    }
-    
-    # Map input actions to output keys
-    action_map = {
-        "sitting": "Sitting",
-        "standing": "Standing still",
-        "walking": "Walking",
-        "upstair": "Upstair",
-        "downstair": "Downstair"
-    }
-    
-    # Group consecutive clips with the same action
-    if not clips:
-        return output
-    
-    current_action = clips[0]["classified_action"]
-    start_frame = 1  # Start from frame 1
-    
-    for i, clip in enumerate(clips):
-        action = clip["classified_action"]
-        clip_start = i * frames_per_clip + 1
-        clip_end = (i + 1) * frames_per_clip
-        
-        # If action changes or it's the last clip
-        if action != current_action:
-            # Save the previous action range
-            mapped_action = action_map.get(current_action.lower(), current_action)
-            output[mapped_action].append({
-                "Starting frame": start_frame,
-                "Ending frame": clip_start - 1
-            })
-            
-            # Start new range
-            current_action = action
-            start_frame = clip_start
-        
-        # Handle last clip
-        if i == len(clips) - 1:
-            mapped_action = action_map.get(current_action.lower(), current_action)
-            # Use actual total frames if provided, otherwise calculate
-            final_frame = total_frames if total_frames else clip_end
-            output[mapped_action].append({
-                "Starting frame": start_frame,
-                "Ending frame": final_frame
-            })
-    
-    # Write output
-    with open(output_file, 'w') as f:
-        json.dump(output, f, indent=2)
-    
-    print(f"Conversion complete! Output saved to {output_file}")
-    print(f"Total frames: {total_frames if total_frames else 'calculated'}")
-    print(f"\nSummary:")
-    for action, ranges in output.items():
-        if ranges:
-            total_action_frames = sum(r["Ending frame"] - r["Starting frame"] + 1 for r in ranges)
-            print(f"  {action}: {len(ranges)} segment(s), {total_action_frames} frames")
+    # Sort by clip index
+    data = sorted(data, key=lambda x: x["clip_index"])
 
+    # Build (label, start_frame, end_frame) per clip
+    clip_ranges = []
+    for i, d in enumerate(data):
+        label = str(d.get(field, "") or "").strip().lower()
+        label = LABEL_MAP.get(label, label)
+        start_frame = i * FRAMES_PER_CLIP + 1
+        end_frame   = (i + 1) * FRAMES_PER_CLIP
+        clip_ranges.append((label, start_frame, end_frame))
 
-# Example usage
-if __name__ == "__main__":
-    # Specify the actual total frames extracted (2331 in your case)
-    convert_clips_to_frames('parkinson_proj/evaluation/evaluation_results/zero_shot_7b_results.json', 'translated_results.json', frames_per_clip=30, total_frames=2331)
-    
-    # Or let it calculate automatically:
-    # convert_clips_to_frames('input.json', 'output.json', frames_per_clip=30)
+    # Merge consecutive clips with same label
+    merged = []
+    for label, start, end in clip_ranges:
+        if merged and merged[-1]["label"] == label and merged[-1]["end"] == start - 1:
+            merged[-1]["end"] = end
+        else:
+            merged.append({"label": label, "start": start, "end": end})
+
+    # Group into output format
+    all_labels = list(LABEL_MAP.values())
+    result = {label: [] for label in all_labels}
+
+    for entry in merged:
+        label = entry["label"]
+        if label not in result:
+            result[label] = []
+        result[label].append({
+            "Starting frame": entry["start"],
+            "Ending frame":   entry["end"]
+        })
+
+    return result
+
+# ==========================
+# MAIN
+# ==========================
+with open(INPUT_FILE) as f:
+    data = json.load(f)
+
+# predicted_label output
+predicted_frames = clips_to_frames(data, "predicted_label")
+with open(OUTPUT_PREDICTED, "w") as f:
+    json.dump(predicted_frames, f, indent=2)
+print(f"✅ Saved: {OUTPUT_PREDICTED}")
+
+# model_prediction output
+model_frames = clips_to_frames(data, "model_prediction")
+with open(OUTPUT_MODEL, "w") as f:
+    json.dump(model_frames, f, indent=2)
+print(f"✅ Saved: {OUTPUT_MODEL}")

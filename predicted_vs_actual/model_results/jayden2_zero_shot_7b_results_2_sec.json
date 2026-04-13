@@ -1,0 +1,478 @@
+[
+  {
+    "video_path": "data/video_j2/clip0000.mp4",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
+    "confidence": "high",
+    "processing_time": 8.794426679611206
+  },
+  {
+    "video_path": "data/video_j2/clip0001.mp4",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
+    "confidence": "high",
+    "processing_time": 7.70996618270874
+  },
+  {
+    "video_path": "data/video_j2/clip0002.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.614955186843872
+  },
+  {
+    "video_path": "data/video_j2/clip0003.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.504256963729858
+  },
+  {
+    "video_path": "data/video_j2/clip0004.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.67707896232605
+  },
+  {
+    "video_path": "data/video_j2/clip0005.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.5217180252075195
+  },
+  {
+    "video_path": "data/video_j2/clip0006.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.573426008224487
+  },
+  {
+    "video_path": "data/video_j2/clip0007.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.536840200424194
+  },
+  {
+    "video_path": "data/video_j2/clip0008.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.555263042449951
+  },
+  {
+    "video_path": "data/video_j2/clip0009.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.594867944717407
+  },
+  {
+    "video_path": "data/video_j2/clip0010.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.567631006240845
+  },
+  {
+    "video_path": "data/video_j2/clip0011.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.709011077880859
+  },
+  {
+    "video_path": "data/video_j2/clip0012.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.61672306060791
+  },
+  {
+    "video_path": "data/video_j2/clip0013.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.6241679191589355
+  },
+  {
+    "video_path": "data/video_j2/clip0014.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.927541017532349
+  },
+  {
+    "video_path": "data/video_j2/clip0015.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.764414072036743
+  },
+  {
+    "video_path": "data/video_j2/clip0016.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.602810859680176
+  },
+  {
+    "video_path": "data/video_j2/clip0017.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.70412802696228
+  },
+  {
+    "video_path": "data/video_j2/clip0018.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.608337879180908
+  },
+  {
+    "video_path": "data/video_j2/clip0019.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.670130252838135
+  },
+  {
+    "video_path": "data/video_j2/clip0020.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.591504812240601
+  },
+  {
+    "video_path": "data/video_j2/clip0021.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.702649116516113
+  },
+  {
+    "video_path": "data/video_j2/clip0022.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.740326881408691
+  },
+  {
+    "video_path": "data/video_j2/clip0023.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.732693195343018
+  },
+  {
+    "video_path": "data/video_j2/clip0024.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.736061096191406
+  },
+  {
+    "video_path": "data/video_j2/clip0025.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.7278687953948975
+  },
+  {
+    "video_path": "data/video_j2/clip0026.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.549715280532837
+  },
+  {
+    "video_path": "data/video_j2/clip0027.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.648116827011108
+  },
+  {
+    "video_path": "data/video_j2/clip0028.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.641258001327515
+  },
+  {
+    "video_path": "data/video_j2/clip0029.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.635411977767944
+  },
+  {
+    "video_path": "data/video_j2/clip0030.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.598215818405151
+  },
+  {
+    "video_path": "data/video_j2/clip0031.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.559485197067261
+  },
+  {
+    "video_path": "data/video_j2/clip0032.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.577773094177246
+  },
+  {
+    "video_path": "data/video_j2/clip0033.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.495804309844971
+  },
+  {
+    "video_path": "data/video_j2/clip0034.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.572362184524536
+  },
+  {
+    "video_path": "data/video_j2/clip0035.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.533026218414307
+  },
+  {
+    "video_path": "data/video_j2/clip0036.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.577398777008057
+  },
+  {
+    "video_path": "data/video_j2/clip0037.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.514787197113037
+  },
+  {
+    "video_path": "data/video_j2/clip0038.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.622118949890137
+  },
+  {
+    "video_path": "data/video_j2/clip0039.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.630791187286377
+  },
+  {
+    "video_path": "data/video_j2/clip0040.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.702738285064697
+  },
+  {
+    "video_path": "data/video_j2/clip0041.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.703038930892944
+  },
+  {
+    "video_path": "data/video_j2/clip0042.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.62899923324585
+  },
+  {
+    "video_path": "data/video_j2/clip0043.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.577358961105347
+  },
+  {
+    "video_path": "data/video_j2/clip0044.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.65432596206665
+  },
+  {
+    "video_path": "data/video_j2/clip0045.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.532159090042114
+  },
+  {
+    "video_path": "data/video_j2/clip0046.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.567696809768677
+  },
+  {
+    "video_path": "data/video_j2/clip0047.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.5958571434021
+  },
+  {
+    "video_path": "data/video_j2/clip0048.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.719682216644287
+  },
+  {
+    "video_path": "data/video_j2/clip0049.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.717682361602783
+  },
+  {
+    "video_path": "data/video_j2/clip0050.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.648066997528076
+  },
+  {
+    "video_path": "data/video_j2/clip0051.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.560880184173584
+  },
+  {
+    "video_path": "data/video_j2/clip0052.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.641540765762329
+  },
+  {
+    "video_path": "data/video_j2/clip0053.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.510098934173584
+  },
+  {
+    "video_path": "data/video_j2/clip0054.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.665898084640503
+  },
+  {
+    "video_path": "data/video_j2/clip0055.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.626839876174927
+  },
+  {
+    "video_path": "data/video_j2/clip0056.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.506000757217407
+  },
+  {
+    "video_path": "data/video_j2/clip0057.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.560521841049194
+  },
+  {
+    "video_path": "data/video_j2/clip0058.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.47400689125061
+  },
+  {
+    "video_path": "data/video_j2/clip0059.mp4",
+    "raw_response": "walking",
+    "classified_action": "walking",
+    "confidence": "high",
+    "processing_time": 7.642150163650513
+  },
+  {
+    "video_path": "data/video_j2/clip0060.mp4",
+    "raw_response": "standing",
+    "classified_action": "standing",
+    "confidence": "high",
+    "processing_time": 7.713407039642334
+  },
+  {
+    "video_path": "data/video_j2/clip0061.mp4",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
+    "confidence": "high",
+    "processing_time": 7.6994781494140625
+  },
+  {
+    "video_path": "data/video_j2/clip0062.mp4",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
+    "confidence": "high",
+    "processing_time": 7.873953104019165
+  },
+  {
+    "video_path": "data/video_j2/clip0063.mp4",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
+    "confidence": "high",
+    "processing_time": 7.8705339431762695
+  },
+  {
+    "video_path": "data/video_j2/clip0064.mp4",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
+    "confidence": "high",
+    "processing_time": 7.7359631061553955
+  },
+  {
+    "video_path": "data/video_j2/clip0065.mp4",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
+    "confidence": "high",
+    "processing_time": 7.724569082260132
+  },
+  {
+    "video_path": "data/video_j2/clip0066.mp4",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
+    "confidence": "high",
+    "processing_time": 7.6965789794921875
+  },
+  {
+    "video_path": "data/video_j2/clip0067.mp4",
+    "raw_response": "sitting",
+    "classified_action": "sitting",
+    "confidence": "high",
+    "processing_time": 7.393542289733887
+  }
+]

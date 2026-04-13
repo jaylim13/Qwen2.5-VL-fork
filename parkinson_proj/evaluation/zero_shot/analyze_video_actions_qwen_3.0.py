@@ -16,7 +16,31 @@ from typing import List, Dict
 
 # Predefined action classes
 ACTIONS = ["walking", "sitting", "standing", "go upstair", "go downstair"]
-SLAM_SUMMARY_FILE = "data/video_j/jayden_slam_clip_summaries.json"
+SLAM_SUMMARY_FILE = "data/video_j5/Jayden5_slam_clip_summaries.json"
+CRITERIA = """
+ # ==========================
+    # 1 Stairs (vertical + horizontal)
+    # ==========================
+    if vertical displacement > 0.15 and 0.1 < horizontal displacement < 1.45:
+        return "go upstair"
+
+    if vertical displacement < -0.15 and 0.1 < horizontal displacement < 1.45:
+        return "go downstair"
+
+    # ==========================
+    # 2 Walking (large horizontal)
+    # ==========================
+    if horizontal displacement > 0.5 and average speed > 0.5:
+        return "walking"
+
+    # ==========================
+    # 3 Sitting/Standing (Minimal displacement)
+    # ==========================
+    Use your own discretion based on the video clip
+    
+    
+
+"""
 
 def load_slam_summaries(path):
     with open(path, "r") as f:
@@ -64,10 +88,9 @@ def classify_video_action(model, processor, video_path: str, slam_text: str) -> 
     """Classify action in a single video clip"""
 
     prompt = (
-        "The following motion data was captured from the headset during this video clip:\n"
-        f"{slam_text}\n\n"
         "Analyze the video clip and classify the action being performed.\n"
         f"Choose ONLY ONE action from this list: {', '.join(ACTIONS)}\n\n"
+        f"Use the SLAM data {slam_text} with the following criteria {CRITERIA} to aid in your choice:"
         "Respond with just the action name, nothing else."
     )
 

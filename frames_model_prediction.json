@@ -1,0 +1,56 @@
+{
+  "Sitting": [
+    {
+      "Starting frame": 1,
+      "Ending frame": 60
+    },
+    {
+      "Starting frame": 181,
+      "Ending frame": 300
+    },
+    {
+      "Starting frame": 1801,
+      "Ending frame": 2280
+    }
+  ],
+  "Standing still": [
+    {
+      "Starting frame": 901,
+      "Ending frame": 960
+    }
+  ],
+  "Walking": [
+    {
+      "Starting frame": 61,
+      "Ending frame": 180
+    },
+    {
+      "Starting frame": 301,
+      "Ending frame": 540
+    },
+    {
+      "Starting frame": 961,
+      "Ending frame": 1200
+    },
+    {
+      "Starting frame": 1681,
+      "Ending frame": 1800
+    }
+  ],
+  "Upstair": [
+    {
+      "Starting frame": 541,
+      "Ending frame": 840
+    }
+  ],
+  "Downstair": [
+    {
+      "Starting frame": 841,
+      "Ending frame": 900
+    },
+    {
+      "Starting frame": 1201,
+      "Ending frame": 1680
+    }
+  ]
+}

@@ -15,8 +15,30 @@ from qwen_vl_utils import process_vision_info
 from typing import List, Dict
 
 # Predefined action classes
-ACTIONS = ["walking", "sitting", "standing", "go upstair", "go downstair"]
+SLAM_SUMMARY_FILE = "data/video_h/Henry_slam_clip_summaries.json"
+ACTIONS = ["walking", "sitting", "standing"]
+CRITERIA = """
+    # ==========================
+    # 1. Walking (large horizontal)
+    # ==========================
+    if horizontal displacement > 0.5:
+        return "walking"
+
+    # ==========================
+    # 2. Sitting/Standing (Minimal displacement)
+    # ==========================
+    Use your own discretion based on the video clip
+    
+    
+
+"""
 base_model_id = "Qwen/Qwen2.5-VL-7B-Instruct"
+
+def load_slam_summaries(path):
+    with open(path, "r") as f:
+        data = json.load(f)
+    return {d["clip_index"]: d["slam_text_summary"] for d in data}
+
 def load_model(model_id):
     """Load the Qwen2.5-VL model"""
     print(f"🔄 Loading Qwen2.5-VL model: {model_id}...")
@@ -54,14 +76,17 @@ def get_model_device(model):
     else:
         return next(model.parameters()).device
 
-def classify_video_action(model, processor, video_path: str) -> Dict:
+def classify_video_action(model, processor, video_path: str, slam_text: str) -> Dict:
     """Classify action in a single video clip"""
     
     # Create the prompt for action classification
-    prompt = f"""Analyze this video clip and classify the action being performed. 
-Choose ONLY ONE action from this list: {', '.join(ACTIONS)}
+    prompt = (
+        "Analyze the video clip and classify the action being performed.\n"
+        f"Choose ONLY ONE action from this list: {', '.join(ACTIONS)}\n\n"
+        # f"Use the SLAM data {slam_text} with the following criteria {CRITERIA} to aid in your choice:"
+        "Respond with just the action name, nothing else."
+    )
 
-Respond with just the action name, nothing else."""
 
     messages = [
         {
@@ -161,10 +186,10 @@ def parse_args():
                        help="Path to folder containing video files")
     parser.add_argument("--output_file", type=str, required=True,
                        help="Path to output JSON file for results")
-    parser.add_argument("--model_id", type=str, default="Qwen/Qwen2.5-VL-7B-Instruct",
-                       help="Model ID to use for classification")
-    # parser.add_argument("--model_id", type=str, default="models/yue_model",
-    #                     help="Model ID to use for classification")
+    # parser.add_argument("--model_id", type=str, default="Qwen/Qwen2.5-VL-7B-Instruct",
+    #                    help="Model ID to use for classification")
+    parser.add_argument("--model_id", type=str, default="models/yue_model",
+                        help="Model ID to use for classification")
     
     args = parser.parse_args()
     
@@ -181,6 +206,9 @@ def parse_args():
 
 def main():
     """Main function to analyze all video clips"""
+    if not os.path.exists(SLAM_SUMMARY_FILE):
+        raise FileNotFoundError(f"SLAM summary file not found: {SLAM_SUMMARY_FILE}")
+    slam_summaries = load_slam_summaries(SLAM_SUMMARY_FILE)
     args = parse_args()
     
     print("🚀 Starting Video Action Classification")
@@ -207,11 +235,14 @@ def main():
     print("=" * 50)
     
     for i, video_path in enumerate(video_files, 1):
+        clip_index = f"clip_{i:04d}"
+        slam_text = slam_summaries.get(clip_index, "No motion data available.")
+
         video_name = os.path.basename(video_path)
         print(f"\n📹 Processing {i}/{total_files}: {video_name}")
         
         start_time = time.time()
-        result = classify_video_action(model, processor, video_path)
+        result = classify_video_action(model, processor, video_path, slam_text)
         end_time = time.time()
         
         result["processing_time"] = end_time - start_time

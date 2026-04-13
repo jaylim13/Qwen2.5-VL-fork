@@ -18,7 +18,7 @@ args = parser.parse_args()
 
 # Paths
 RESULTS_JSON = args.results_json
-ANNOT_DIR = "annotations/video_j" \
+ANNOT_DIR = "annotations/video_j5/" \
 ""
 ANNOT_FILES = ["labels.csv"]
 
